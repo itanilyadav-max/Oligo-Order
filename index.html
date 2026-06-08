@@ -207,6 +207,22 @@
             <div id="menuList" class="space-y-4"></div>
         </div>
 
+        <!-- FARM VIEW -->
+        <div id="viewFarm" class="fade-in hidden">
+            <div class="mb-6">
+                <h2 class="font-bold text-2xl mb-1 tracking-tight flex items-center gap-2">
+                    <i class="fas fa-seedling text-green-600"></i> From Our Farm
+                </h2>
+                <p class="text-gray-500 text-sm">Live updates, photos & videos straight from our growing space.</p>
+            </div>
+            <div id="farmFeedContainer" class="space-y-5">
+                <div class="text-center py-12 text-gray-400">
+                    <div class="spinner" style="margin:0 auto 12px;"></div>
+                    <p class="text-sm">Loading farm updates...</p>
+                </div>
+            </div>
+        </div>
+
         <!-- ORDERS VIEW -->
         <div id="viewOrders" class="fade-in hidden">
             <h2 class="font-bold text-2xl mb-6 ml-1 tracking-tight">Your Orders</h2>
@@ -269,6 +285,91 @@
                 <button onclick="window.logout()" class="w-full py-5 text-red-500 font-bold text-xs uppercase tracking-widest border border-dashed border-red-100 rounded-[24px] hover:bg-red-50 transition"><i class="fas fa-sign-out-alt mr-2"></i> Log Out Account</button>
             </div>
         </div>
+
+        <!-- MY DESK VIEW (FIXED) -->
+        <div id="viewComplaints" class="fade-in hidden space-y-6 pb-4">
+
+            <!-- Header -->
+            <div>
+                <h2 class="font-bold text-2xl tracking-tight flex items-center gap-2">
+                    <i class="fas fa-comment-dots text-red-500"></i> My Desk
+                </h2>
+                <p class="text-gray-400 text-sm mt-1">Your complaints, feedback & reviews</p>
+            </div>
+
+            <!-- Complaints Section -->
+            <div class="modern-card p-6">
+                <div class="flex items-center justify-between mb-5">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">My Complaints</span>
+                    <div class="flex gap-1 bg-gray-100 rounded-xl p-1">
+                        <button onclick="window.filterMyComplaints('all')"    id="cf-all"      class="cf-btn px-3 py-1 rounded-lg text-xs font-bold bg-white shadow text-gray-800">All</button>
+                        <button onclick="window.filterMyComplaints('open')"   id="cf-open"     class="cf-btn px-3 py-1 rounded-lg text-xs font-bold text-gray-500">Pending</button>
+                        <button onclick="window.filterMyComplaints('resolved')" id="cf-resolved" class="cf-btn px-3 py-1 rounded-lg text-xs font-bold text-gray-500">Resolved</button>
+                    </div>
+                </div>
+                <div id="myComplaintsList" class="space-y-3">
+                    <p class="text-center text-gray-300 py-6 text-sm">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Farm Good Points -->
+            <div class="modern-card p-6">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-4">Why We Love What We Do</span>
+                <div class="space-y-3" id="farmGoodPointsList">
+                    <div class="flex items-start gap-3 bg-green-50 rounded-2xl p-4">
+                        <span class="text-green-500 mt-0.5"><i class="fas fa-seedling"></i></span>
+                        <p class="text-sm text-gray-700 font-medium">100% naturally grown — no pesticides, no chemicals, ever.</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-green-50 rounded-2xl p-4">
+                        <span class="text-green-500 mt-0.5"><i class="fas fa-truck"></i></span>
+                        <p class="text-sm text-gray-700 font-medium">Harvested fresh and delivered to your door the same morning.</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-green-50 rounded-2xl p-4">
+                        <span class="text-green-500 mt-0.5"><i class="fas fa-leaf"></i></span>
+                        <p class="text-sm text-gray-700 font-medium">Packed with nutrients — microgreens have up to 40x more vitamins than mature plants.</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-green-50 rounded-2xl p-4">
+                        <span class="text-green-500 mt-0.5"><i class="fas fa-heart"></i></span>
+                        <p class="text-sm text-gray-700 font-medium">Supporting local urban farming and sustainable food systems.</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-green-50 rounded-2xl p-4">
+                        <span class="text-green-500 mt-0.5"><i class="fas fa-star"></i></span>
+                        <p class="text-sm text-gray-700 font-medium">Trusted by top chefs, restaurants and health-conscious families across the city.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Share a Review -->
+            <div class="modern-card p-6 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100">
+                <span class="text-[10px] font-bold text-purple-500 uppercase tracking-widest block mb-2">Loved Our Greens?</span>
+                <p class="text-sm text-gray-600 mb-5 leading-relaxed">Your review helps other health lovers find us. It takes 30 seconds and means the world to us! 🌱</p>
+                <div class="space-y-3">
+                    <a href="https://www.facebook.com/oligogreens" target="_blank"
+                       class="flex items-center gap-4 bg-white rounded-2xl px-5 py-4 shadow-sm border border-gray-100 active:scale-95 transition">
+                        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
+                            <i class="fab fa-facebook-f text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm text-gray-800">Review us on Facebook</p>
+                            <p class="text-xs text-gray-400">Share your experience with your friends</p>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-300 ml-auto"></i>
+                    </a>
+                    <a href="https://www.instagram.com/oligogreens" target="_blank"
+                       class="flex items-center gap-4 bg-white rounded-2xl px-5 py-4 shadow-sm border border-gray-100 active:scale-95 transition">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">
+                            <i class="fab fa-instagram text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm text-gray-800">Tag us on Instagram</p>
+                            <p class="text-xs text-gray-400">@oligogreens — show your plate!</p>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-300 ml-auto"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </main>
 
     <!-- CART -->
@@ -318,9 +419,17 @@
             <i class="fas fa-receipt text-lg mb-1 transition-transform group-active:scale-90"></i>
             <span class="text-[10px] font-bold uppercase tracking-tighter">Orders</span>
         </button>
+        <button onclick="window.navTo('viewFarm')" id="nav-viewFarm" class="flex flex-col items-center group w-16">
+            <i class="fas fa-seedling text-lg mb-1 transition-transform group-active:scale-90"></i>
+            <span class="text-[10px] font-bold uppercase tracking-tighter">Farm</span>
+        </button>
         <button onclick="window.navTo('viewProfile')" id="nav-viewProfile" class="flex flex-col items-center group w-16">
             <i class="fas fa-user-circle text-lg mb-1 transition-transform group-active:scale-90"></i>
             <span class="text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+        </button>
+        <button onclick="window.navTo('viewComplaints')" id="nav-viewComplaints" class="flex flex-col items-center group w-16">
+            <i class="fas fa-comment-dots text-lg mb-1 transition-transform group-active:scale-90"></i>
+            <span class="text-[10px] font-bold uppercase tracking-tighter">My Desk</span>
         </button>
     </nav>
 </div>
@@ -374,14 +483,19 @@ window._authResolved = false;
         db = firebase.database();
         // Speed up auth on slow networks
         auth.useDeviceLanguage();
-        // LOCAL persistence = user stays logged in across browser sessions
-        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(e) {
+        // Use LOCAL persistence on desktop, SESSION on mobile WebView
+        // Android WebView IndexedDB can cause stalls with LOCAL persistence
+        var isMobileWebView = /Android/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+        var persistenceLevel = isMobileWebView
+            ? firebase.auth.Auth.Persistence.SESSION
+            : firebase.auth.Auth.Persistence.LOCAL;
+        auth.setPersistence(persistenceLevel).catch(function(e) {
             console.warn('Persistence set failed (session will still work):', e);
         });
         // Keep database connection alive
         db.goOnline();
-        // Enable offline persistence for database
-        try { db.enablePersistence(); } catch(e) {}
+        // Note: enablePersistence() removed — only needed for Firestore, not
+        // Realtime Database. It caused stalls on Android WebView / mobile browsers.
         console.log("Firebase compat initialized — Vodafone ready");
     } catch(e) {
         console.error("Firebase init error:", e);
@@ -421,7 +535,8 @@ window._authResolved = false;
     let userLocalData = null; 
     let basket = JSON.parse(localStorage.getItem('oligo_basket')) || []; 
     let menuData = {}; 
-    let allOrdersData = {}; 
+    let allOrdersData = {};
+    window._loggedUid = null; // window-scoped so accessible across all script tags 
     let holidaysData = {}; 
     let editingOrderId = null; 
     let editingAddressId = null;
@@ -433,7 +548,7 @@ window._authResolved = false;
 
     // Navigation
     window.navTo = (id) => {
-        ['viewHome', 'viewMenu', 'viewOrders', 'viewProfile'].forEach(v => {
+        ['viewHome', 'viewMenu', 'viewOrders', 'viewFarm', 'viewProfile', 'viewComplaints'].forEach(v => {
             const el = document.getElementById(v); 
             if(el) el.classList.add('hidden');
             const btn = document.getElementById('nav-' + v); 
@@ -442,7 +557,15 @@ window._authResolved = false;
         document.getElementById(id).classList.remove('hidden');
         const activeNav = document.getElementById('nav-' + id); 
         if(activeNav) activeNav.classList.add('nav-active');
-        window.scrollTo(0,0);
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.scrollTop = 0;
+        if (id === 'viewFarm') window.loadFarmFeed();
+        if (id === 'viewComplaints') {
+            // Small delay to ensure auth state is fully propagated
+            setTimeout(() => {
+                window.loadMyComplaints();
+            }, 100);
+        }
     };
 
     // Toast notification
@@ -514,6 +637,13 @@ window._authResolved = false;
 
         // Mark auth as resolved — prevents fallback timers from showing login screen
         window._authResolved = true;
+
+        // === FIX: Update global UID immediately ===
+        if (user) {
+            window._loggedUid = user.uid;
+        } else {
+            window._loggedUid = null;
+        }
 
         // Hide loader always
         document.getElementById('appLoader').style.display = 'none';
@@ -722,45 +852,169 @@ window._authResolved = false;
     }
 
     window.renderMenuItems = (cat) => {
-        const list = document.getElementById('menuList'); 
+        const list = document.getElementById('menuList');
         list.innerHTML = '';
-        document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active')); 
-        const btn = document.getElementById('catBtn-' + cat.replace(/\s+/g,'')); 
+        document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+        const btn = document.getElementById('catBtn-' + cat.replace(/\s+/g,''));
         if(btn) btn.classList.add('active');
-        
-        let hasItems = false;
-        Object.entries(menuData).forEach(([id, item]) => {
-            if(!item.available) return; 
+
+        // Delivery date calculator — skips Sundays and holidays
+        const calcDelivery = function(growDays) {
+            var days = parseInt(growDays) || 7;
+            var d = new Date(); d.setHours(0,0,0,0);
+            var counted = 0; var skipped = [];
+            while (counted < days) {
+                d.setDate(d.getDate() + 1);
+                var ds = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+                if (d.getDay() === 0) continue;
+                var h = window.getHolidayName ? window.getHolidayName(ds) : null;
+                if (h) { skipped.push(h); continue; }
+                counted++;
+            }
+            return {
+                label: d.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),
+                days: days, skipped: skipped
+            };
+        };
+
+        var hasActive = false;
+        var oosItems = [];
+
+        // Pass 1 — available items (identical look to original, now passes gramsPerTray)
+        Object.entries(menuData).forEach(function(entry) {
+            var id = entry[0]; var item = entry[1];
             if(cat !== 'All' && item.category !== cat) return;
-            hasItems = true;
-            list.innerHTML += `
-                <div class="bg-white p-5 rounded-[32px] flex gap-5 items-center border border-gray-50 shadow-sm">
-                    <img src="${item.imageUrl || ''}" class="w-24 h-24 rounded-2xl object-cover bg-gray-50" onerror="this.src='https://placehold.co/150x150?text=Oligo'">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-lg">${item.name}</h4>
-                        <p class="text-[11px] text-gray-500 mt-1">${item.description || 'Fresh harvest.'}</p>
-                        <div class="flex justify-between items-center mt-3">
-                            <span class="font-bold text-green-700 text-lg">Box ${item.price}</span>
-                            <button onclick="window.addToBasket('${id}', '${item.name}', '${item.price}', '${item.category || ''}')" class="bg-green-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-md active:scale-90 transition">ADD</button>
-                        </div>
-                    </div>
-                </div>`;
+            if(!item.available) { oosItems.push(entry); return; }
+            hasActive = true;
+            var grams = parseInt(item.gramsPerTray) || 0;
+            var gramsTag = grams > 0 ? '<span class="text-[10px] text-gray-400 font-medium">' + grams + 'g per box</span>' : '';
+            var safeName = item.name.replace(/'/g,"&#39;");
+            list.innerHTML += '<div class="bg-white p-5 rounded-[32px] flex gap-5 items-center border border-gray-50 shadow-sm">'
+                + '<img src="' + (item.imageUrl||'') + '" class="w-24 h-24 rounded-2xl object-cover bg-gray-50" onerror="this.src=\'https://placehold.co/150x150?text=Oligo\'">'
+                + '<div class="flex-1">'
+                + '<h4 class="font-bold text-lg">' + item.name + '</h4>'
+                + '<p class="text-[11px] text-gray-500 mt-1">' + (item.description||'Fresh harvest.') + '</p>'
+                + gramsTag
+                + '<div class="flex justify-between items-center mt-3">'
+                + '<span class="font-bold text-green-700 text-lg">Box ' + item.price + '</span>'
+                + '<button onclick="window.addToBasket(\'' + id + '\',\'' + safeName + '\',\'' + item.price + '\',\'' + (item.category||'') + '\',' + grams + ')" class="bg-green-600 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-md active:scale-90 transition">ADD</button>'
+                + '</div></div></div>';
         });
-        if(!hasItems) {
+
+        // Pass 2 — out-of-stock items: faded with harvest countdown + pre-order
+        if (oosItems.length > 0) {
+            if (hasActive) {
+                list.innerHTML += '<div class="my-5 flex items-center gap-3">'
+                    + '<div class="flex-1 h-px bg-gray-100"></div>'
+                    + '<div class="flex items-center gap-1.5 bg-orange-50 border border-orange-100 rounded-full px-3 py-1">'
+                    + '<i class="fas fa-seedling text-orange-400 text-[10px]"></i>'
+                    + '<span class="text-[10px] font-black uppercase tracking-widest text-orange-400">Currently Growing</span>'
+                    + '</div>'
+                    + '<div class="flex-1 h-px bg-gray-100"></div></div>';
+            }
+            oosItems.forEach(function(entry) {
+                var id = entry[0]; var item = entry[1];
+                var growDays = parseInt(item.growTime) || 7;
+                var grams    = parseInt(item.gramsPerTray) || 0;
+                var res      = calcDelivery(growDays);
+                var deliveryLabel = res.label;
+                var skipped  = res.skipped;
+                var safeName  = item.name.replace(/'/g,'&#39;');
+                var safeLabel = deliveryLabel.replace(/'/g,'&#39;');
+                var todayLabel = new Date().toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+
+                var holidayMsg = '';
+                if (skipped.length > 0) {
+                    holidayMsg = '<div class="mt-2 flex items-start gap-2 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">'
+                        + '<i class="fas fa-calendar-times text-amber-500 text-[11px] mt-0.5 flex-shrink-0"></i>'
+                        + '<p class="text-[10px] text-amber-700 font-semibold leading-4">+' + skipped.length + ' day(s) added due to holiday: <strong>' + skipped.join(', ') + '</strong></p>'
+                        + '</div>';
+                }
+
+                var gramsInfo = grams > 0 ? '<p class="text-[10px] text-gray-400 mt-0.5">' + grams + 'g per box</p>' : '';
+
+                list.innerHTML += '<div class="rounded-[28px] border border-gray-200 bg-white overflow-hidden" style="opacity:0.85;">'
+                    // Top status strip
+                    + '<div class="bg-gradient-to-r from-red-50 to-orange-50 border-b border-orange-100 px-5 py-2 flex items-center justify-between">'
+                    + '<div class="flex items-center gap-2">'
+                    + '<span class="w-2 h-2 rounded-full bg-red-400 animate-pulse inline-block"></span>'
+                    + '<span class="text-[11px] font-black text-red-500 uppercase tracking-wider">Out of Stock</span>'
+                    + '</div>'
+                    + '<span class="text-[10px] text-orange-600 font-semibold bg-white border border-orange-100 px-2 py-0.5 rounded-full">'
+                    + '<i class="fas fa-seedling mr-1"></i>Ready in ' + growDays + ' days</span>'
+                    + '</div>'
+                    // Faded item row
+                    + '<div class="p-5 flex gap-4 items-start" style="filter:saturate(0.15);">'
+                    + '<img src="' + (item.imageUrl||'') + '" class="w-20 h-20 rounded-2xl object-cover bg-gray-100 flex-shrink-0" onerror="this.src=\'https://placehold.co/150x150?text=Oligo\'">'
+                    + '<div>'
+                    + '<h4 class="font-bold text-lg text-gray-600">' + item.name + '</h4>'
+                    + '<p class="text-[11px] text-gray-400 mt-0.5">' + (item.description||'Fresh harvest.') + '</p>'
+                    + gramsInfo
+                    + '<p class="text-gray-400 text-base font-bold mt-1">Box ' + item.price + '</p>'
+                    + '</div></div>'
+                    // Delivery info panel — full colour
+                    + '<div class="mx-4 mb-4 rounded-2xl border border-green-100 bg-green-50 p-4">'
+                    + '<p class="text-[11px] font-black text-green-700 uppercase tracking-wide mb-2 flex items-center gap-1.5">'
+                    + '<i class="fas fa-truck-fast text-green-500"></i> When will I get it?</p>'
+                    // Timeline
+                    + '<div class="flex items-center gap-2 mb-3">'
+                    + '<div class="flex flex-col items-center">'
+                    + '<div class="w-7 h-7 rounded-full bg-green-200 flex items-center justify-center"><i class="fas fa-calendar-plus text-green-700 text-[10px]"></i></div>'
+                    + '<div class="w-px h-6 bg-green-200"></div>'
+                    + '<div class="w-7 h-7 rounded-full bg-blue-200 flex items-center justify-center"><i class="fas fa-box text-blue-700 text-[10px]"></i></div>'
+                    + '</div>'
+                    + '<div class="flex-1 space-y-2">'
+                    + '<div class="bg-white rounded-xl px-3 py-1.5 border border-green-100">'
+                    + '<p class="text-[10px] text-gray-400 font-semibold">Order Today</p>'
+                    + '<p class="text-[11px] font-bold text-gray-700">' + todayLabel + '</p>'
+                    + '</div>'
+                    + '<div class="bg-white rounded-xl px-3 py-1.5 border border-blue-100">'
+                    + '<p class="text-[10px] text-gray-400 font-semibold">Estimated Delivery</p>'
+                    + '<p class="text-[11px] font-bold text-blue-700">' + deliveryLabel + '</p>'
+                    + '</div></div></div>'
+                    + holidayMsg
+                    + '<p class="text-[10px] text-gray-500 leading-4 mt-2">'
+                    + '<i class="fas fa-info-circle mr-1 text-gray-400"></i>'
+                    + 'Pre-order now — we harvest fresh &amp; deliver on the date above.</p>'
+                    + '<button onclick="window.preOrderItem(\'' + id + '\',\'' + safeName + '\',\'' + item.price + '\',\'' + (item.category||'') + '\',' + growDays + ',\'' + safeLabel + '\',' + grams + ')"'
+                    + ' class="mt-3 w-full bg-blue-600 text-white py-2.5 rounded-xl text-xs font-bold shadow-sm active:scale-[0.98] transition flex items-center justify-center gap-2">'
+                    + '<i class="fas fa-clock"></i> Pre-Order for ' + deliveryLabel + '</button>'
+                    + '</div></div>';
+            });
+        }
+
+        if (!hasActive && oosItems.length === 0) {
             list.innerHTML = '<p class="text-center text-gray-400 py-8">No items in this category</p>';
         }
     };
 
-    window.addToBasket = (id, name, price, category, qty = 1) => {
-        const numPrice = parseFloat(price) || 0; 
-        const existing = basket.find(i => i.id === id); 
-        if(existing) { 
-            existing.qty = (existing.qty || 0) + qty; 
-        } else { 
-            basket.push({ id, name, price: numPrice, category: category || 'Microgreens', qty }); 
+    window.preOrderItem = function(id, name, price, category, growDays, deliveryLabel, grams) {
+        var numPrice = parseFloat(price) || 0;
+        var existing = basket.find(function(i){ return i.id === id; });
+        if (existing) {
+            existing.qty = (existing.qty || 0) + 1;
+        } else {
+            basket.push({ id:id, name:name, price:numPrice,
+                category: category || 'Microgreens', qty:1,
+                isPreOrder:true, estimatedDelivery:deliveryLabel,
+                growDays:parseInt(growDays)||7, gramsPerBox:parseInt(grams)||0 });
         }
-        saveBasket(); 
-        window.showToast("Added to basket");
+        saveBasket();
+        window.showToast('Pre-order added! Delivery: ' + deliveryLabel);
+    };
+
+    window.addToBasket = function(id, name, price, category, gramsPerBox, qty) {
+        qty = qty || 1; gramsPerBox = parseInt(gramsPerBox) || 0;
+        var numPrice = parseFloat(price) || 0;
+        var existing = basket.find(function(i){ return i.id === id; });
+        if(existing) {
+            existing.qty = (existing.qty || 0) + qty;
+            if (!existing.gramsPerBox && gramsPerBox) existing.gramsPerBox = gramsPerBox;
+        } else {
+            basket.push({ id:id, name:name, price:numPrice, category: category || 'Microgreens', qty:qty, gramsPerBox:gramsPerBox });
+        }
+        saveBasket();
+        window.showToast('Added to basket');
     };
 
     function updateBadge() { 
@@ -773,32 +1027,84 @@ window._authResolved = false;
     }
 
     function renderBasket() {
-        const list = document.getElementById('cartItems'); 
-        const totalEl = document.getElementById('cartTotal'); 
+        const list = document.getElementById('cartItems');
+        const totalEl = document.getElementById('cartTotal');
         let total = 0;
-        
-        if(basket.length === 0) { 
-            list.innerHTML = '<p class="text-center text-gray-400 py-10">Your basket is empty</p>'; 
-            totalEl.innerText = "Box 0"; 
-            return; 
+
+        if(basket.length === 0) {
+            list.innerHTML = '<p class="text-center text-gray-400 py-10 font-medium">Your basket is empty</p>';
+            totalEl.innerText = "Box 0";
+            return;
         }
-        
-        list.innerHTML = basket.map((item, idx) => {
-            total += (item.price * item.qty); 
-            return `
-                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl">
-                    <div>
-                        <p class="font-bold">${item.name}</p>
-                        <p class="text-xs text-gray-500">Qty: ${item.qty}</p>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="window.changeQty(${idx}, -1)" class="w-8 h-8 rounded-full bg-white border flex items-center justify-center">-</button>
-                        <span class="font-bold">${item.qty}</span>
-                        <button onclick="window.changeQty(${idx}, 1)" class="w-8 h-8 rounded-full bg-white border flex items-center justify-center">+</button>
-                    </div>
-                </div>`;
+
+        // Hardcoded quantity-display rules (same as old customer app)
+        function getQuantityDisplay(item) {
+            var qty      = item.qty || 1;
+            var name     = (item.name || '').toLowerCase();
+            var category = item.category || '';
+            if (category === 'Live Trays') {
+                return qty + ' Tray' + (qty > 1 ? 's' : '');
+            }
+            if (category === 'Edible Flowers' || (name.indexOf('flower') !== -1 && name.indexOf('sunflower') === -1)) {
+                return qty + ' Box' + (qty > 1 ? '(es)' : '');
+            }
+            if (name.indexOf('nasturtium') !== -1) {
+                return (qty * 25) + ' Leaves';
+            }
+            if (name.indexOf('basil') !== -1) {
+                return qty + ' Box' + (qty > 1 ? '(es)' : '');
+            }
+            if (name.indexOf('wheatgrass') !== -1 || category === 'Wheatgrass') {
+                return (qty * 100) + 'g';
+            }
+            if (name.indexOf('beetroot') !== -1 || name.indexOf('red amaranth') !== -1) {
+                return (qty * 15) + 'g';
+            }
+            if (name.indexOf('superfood') !== -1 || name.indexOf('rainbow') !== -1) {
+                return (qty * 60) + 'g';
+            }
+            // default
+            return (qty * 50) + 'g';
+        }
+
+        var totalGrams = 0;
+        list.innerHTML = basket.map(function(item, idx) {
+            total += (item.price * item.qty);
+            var qDisplay = getQuantityDisplay(item);
+
+            // Accumulate total grams (only for gram-based lines)
+            if (qDisplay.indexOf('g') !== -1 && qDisplay.indexOf('Trays') === -1 && qDisplay.indexOf('Box') === -1 && qDisplay.indexOf('Leaves') === -1) {
+                totalGrams += parseInt(qDisplay) || 0;
+            }
+
+            var preTag = (item.isPreOrder && item.estimatedDelivery)
+                ? '<span class="inline-flex items-center gap-1 mt-1 bg-blue-50 border border-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full">'
+                  + '<i class="fas fa-clock" style="font-size:9px"></i>&nbsp;Pre-order &middot; ' + item.estimatedDelivery + '</span>'
+                : '';
+
+            return '<div class="flex justify-between items-center bg-gray-50 p-5 rounded-2xl border border-gray-100">'
+                + '<div>'
+                + '<p class="font-bold text-sm text-gray-800">' + item.name + '</p>'
+                + '<p class="text-[10px] text-green-600 font-bold mt-0.5"><i class="fas fa-weight-hanging mr-1"></i>' + qDisplay + '</p>'
+                + preTag
+                + '</div>'
+                + '<div class="flex items-center gap-3">'
+                + '<button onclick="window.changeQty(' + idx + ', -1)" class="w-8 h-8 rounded-full bg-white border flex items-center justify-center text-gray-400">-</button>'
+                + '<span class="font-bold text-sm text-gray-800">' + item.qty + '</span>'
+                + '<button onclick="window.changeQty(' + idx + ', 1)" class="w-8 h-8 rounded-full bg-white border flex items-center justify-center text-gray-400">+</button>'
+                + '</div>'
+                + '</div>';
         }).join('');
-        totalEl.innerText = "Box " + total;
+
+        if (totalGrams > 0) {
+            list.innerHTML += '<div class="mt-2 flex items-center justify-between bg-green-50 border border-green-100 rounded-2xl px-4 py-2.5">'
+                + '<span class="text-xs font-bold text-green-700"><i class="fas fa-weight-hanging mr-1.5"></i>Total Weight</span>'
+                + '<span class="text-sm font-black text-green-700">' + totalGrams + 'g</span>'
+                + '</div>';
+        }
+
+        const dateIn = document.getElementById('checkoutDate') ? document.getElementById('checkoutDate').value : '';
+        if(dateIn && window.calculateDeliveryLogic) { window.calculateDeliveryLogic(dateIn); } else { totalEl.innerText = 'Box ' + total; }
     }
 
     window.changeQty = (idx, d) => { 
@@ -993,26 +1299,26 @@ window._authResolved = false;
                 ).join('');
 
                 // ── ADJUSTED: NON-AVAILABILITY PANEL ─────────────────────────
-                // The admin edits o.items directly (sets qty to 0 for unavailable items).
-                // o.originalItems holds what the customer originally requested.
-                // We compare them and show the panel whenever anything differs.
+                // Two triggers:
+                //   1. o.originalItems exists (customer-app orders — original path)
+                //   2. o.shortfallReason exists (admin adjusted via Log Shortfall)
+                //      Admin writes: items (adjusted), shortfallReason, totalAmount
+                //      In this case show all items: zero-qty = unavailable, >0 = delivered
                 let adjustmentHtml = '';
 
                 const originalItems = o.originalItems || [];
-                const currentItems  = o.items || [];
+                const currentItems  = Array.isArray(o.items) ? o.items : [];
 
+                // ── PATH A: originalItems exist — compare old vs new ──────────
                 if (originalItems.length > 0 && currentItems.length > 0) {
-                    // Build lookup maps keyed by item id (fallback: name)
                     const origMap = {};
                     originalItems.forEach(i => { origMap[i.id || i.name] = i; });
                     const currMap = {};
                     currentItems.forEach(i => { currMap[i.id || i.name] = i; });
 
-                    // Detect any change: qty differs, item is 0, or new items added
                     let hasChange = false;
                     originalItems.forEach(oi => {
-                        const key = oi.id || oi.name;
-                        const cur = currMap[key];
+                        const cur = currMap[oi.id || oi.name];
                         if (!cur || parseInt(cur.qty) !== parseInt(oi.qty)) hasChange = true;
                     });
                     currentItems.forEach(ci => {
@@ -1020,10 +1326,8 @@ window._authResolved = false;
                     });
 
                     if (hasChange) {
-                        // Left column — YOUR REQUEST (original quantities)
                         const requestRows = originalItems.map(oi => {
-                            const key = oi.id || oi.name;
-                            const cur = currMap[key];
+                            const cur = currMap[oi.id || oi.name];
                             const curQty = cur ? parseInt(cur.qty) : 0;
                             const reduced = curQty < parseInt(oi.qty);
                             return `<div class="flex items-center gap-1 mb-1">
@@ -1031,7 +1335,6 @@ window._authResolved = false;
                             </div>`;
                         }).join('');
 
-                        // Right column — ACTUAL DELIVERY (current qty after admin edit)
                         const shownKeys = new Set();
                         let actualRows = originalItems.map(oi => {
                             const key = oi.id || oi.name;
@@ -1041,7 +1344,6 @@ window._authResolved = false;
                             const origQty = parseInt(oi.qty);
                             const isZero    = curQty === 0;
                             const isReduced = !isZero && curQty < origQty;
-                            const isSame    = curQty === origQty;
                             const color     = isZero ? 'text-red-500' : isReduced ? 'text-orange-500' : 'text-green-700';
                             const strike    = isZero ? 'line-through opacity-60' : '';
                             const icon      = isZero ? '✗' : isReduced ? '↓' : '✓';
@@ -1051,7 +1353,6 @@ window._authResolved = false;
                                 <span class="text-xs font-bold ${color} ${strike} leading-5">${curQty}x ${oi.name}</span>
                             </div>`;
                         }).join('');
-                        // Any extra items in current not in original (admin added something)
                         currentItems.forEach(ci => {
                             const key = ci.id || ci.name;
                             if (!shownKeys.has(key)) {
@@ -1082,6 +1383,129 @@ window._authResolved = false;
                                 </p>
                             </div>`;
                     }
+
+                // ── PATH B: Admin used Log Shortfall (shortfallReason set, no originalItems) ──
+                } else if (o.shortfallReason && currentItems.length > 0) {
+                    // Show all items — zero qty = not delivered, >0 = delivered
+                    const hasAnyZero = currentItems.some(i => parseInt(i.qty) === 0);
+                    const hasAnyReduced = currentItems.some(i => parseInt(i.qty) > 0);
+
+                    // Build the single delivery column (what was actually sent)
+                    const deliveryRows = currentItems.map(i => {
+                        const qty = parseInt(i.qty) || 0;
+                        const isZero = qty === 0;
+                        const icon      = isZero ? '✗' : '✓';
+                        const iconColor = isZero ? 'text-red-400' : 'text-green-500';
+                        const color     = isZero ? 'text-red-500 line-through opacity-60' : 'text-green-700';
+                        return `<div class="flex items-center gap-2 mb-1.5">
+                            <span class="text-sm ${iconColor} font-bold w-4 shrink-0">${icon}</span>
+                            <span class="text-xs font-semibold ${color} leading-5">
+                                ${isZero ? i.name : qty + 'x ' + i.name}
+                            </span>
+                            ${isZero ? '<span class="text-[9px] bg-red-100 text-red-500 font-bold px-1.5 py-0.5 rounded-full ml-1">Not Available</span>' : ''}
+                        </div>`;
+                    }).join('');
+
+                    // Reason label map
+                    const reasonLabels = {
+                        'Non-Availability': 'Non-Availability',
+                        'Low Germination': 'Low Germination',
+                        'Slow Growth': 'Slow Growth',
+                        'Harvest Error': 'Harvest Error',
+                        'Pest / Disease': 'Pest / Disease',
+                        'Contamination': 'Contamination',
+                        'Weather / Environment': 'Weather / Environment',
+                        'Over-Order': 'Over-Order'
+                    };
+                    const reasonLabel = reasonLabels[o.shortfallReason] || o.shortfallReason;
+
+                    adjustmentHtml = `
+                        <div class="mt-3 rounded-2xl border border-orange-200 bg-orange-50 overflow-hidden">
+                            <!-- Header bar -->
+                            <div class="flex items-center justify-between px-4 py-3 bg-orange-100 border-b border-orange-200">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 rounded-full bg-orange-500 flex items-center justify-center shrink-0">
+                                        <i class="fas fa-exclamation text-white text-xs"></i>
+                                    </span>
+                                    <div>
+                                        <p class="text-[11px] font-black text-orange-700 uppercase tracking-widest leading-none">Order Adjusted</p>
+                                        <p class="text-[10px] text-orange-500 font-semibold mt-0.5">Non-Availability Notice</p>
+                                    </div>
+                                </div>
+                                <span class="text-[9px] font-black bg-orange-500 text-white px-2.5 py-1 rounded-full uppercase tracking-wide">${reasonLabel}</span>
+                            </div>
+                            <!-- Items list -->
+                            <div class="px-4 pt-3 pb-1">
+                                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-2.5">What You Will Receive</p>
+                                ${deliveryRows}
+                            </div>
+                            <!-- Footer note -->
+                            <div class="px-4 pb-3 mt-1">
+                                <div class="flex items-start gap-2 bg-white rounded-xl p-2.5 border border-orange-100">
+                                    <i class="fas fa-info-circle text-orange-400 mt-0.5 text-xs shrink-0"></i>
+                                    <p class="text-[9px] text-gray-500 leading-4">
+                                        Some items in your order were unavailable today due to <strong>${reasonLabel}</strong>. 
+                                        Your bill has been updated to reflect only the items being delivered.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>`;
+                }
+
+                // ── PATH C: Substitute given — ALWAYS show if substitutes exist ────
+                // Note: no !adjustmentHtml guard — substitute must show even when
+                // PATH A already built the shortfall panel above.
+                if (o.substitutes && o.substitutes.length > 0) {
+                    const substituteRows = o.substitutes.map(s => {
+                        return `<div class="flex items-center gap-2 mb-2 flex-wrap">
+                            <span class="text-xs text-red-400 line-through font-semibold">${s.originalItem}</span>
+                            <span class="text-xs text-gray-400">→</span>
+                            <span class="text-xs font-bold text-teal-700">${s.substituteQty}x ${s.substituteItem}</span>
+                            <span class="text-[9px] bg-teal-100 text-teal-700 font-bold px-1.5 py-0.5 rounded-full">Substitute</span>
+                        </div>`;
+                    }).join('');
+                    const custNote = o.substituteNote || '';
+                    adjustmentHtml += `
+                        <div class="mt-3 rounded-2xl border border-teal-200 bg-teal-50 overflow-hidden">
+                            <div class="flex items-center justify-between px-4 py-3 bg-teal-100 border-b border-teal-200">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 rounded-full bg-teal-500 flex items-center justify-center shrink-0">
+                                        <i class="fas fa-sync-alt text-white text-xs"></i>
+                                    </span>
+                                    <div>
+                                        <p class="text-[11px] font-black text-teal-800 uppercase tracking-widest leading-none">Substitute Provided</p>
+                                        <p class="text-[10px] text-teal-600 font-semibold mt-0.5">Replacement sent for unavailable items</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-4 pt-3 pb-1">
+                                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-2.5">What Is Being Sent Instead</p>
+                                ${substituteRows}
+                            </div>
+                            ${custNote ? `<div class="px-4 pb-3 mt-1"><div class="flex items-start gap-2 bg-white rounded-xl p-2.5 border border-teal-100"><i class="fas fa-comment-alt text-teal-400 mt-0.5 text-xs shrink-0"></i><p class="text-[9px] text-gray-600 leading-4">${custNote}</p></div></div>` : ''}
+                        </div>`;
+                }
+
+                // ── PATH D: Accept-as-is shortfall (no substitute) ────────────
+                if (!adjustmentHtml && o.adjustmentNote && o.shortfallSubstituted === false) {
+                    adjustmentHtml = `
+                        <div class="mt-3 rounded-2xl border border-orange-200 bg-orange-50 overflow-hidden">
+                            <div class="flex items-center gap-3 px-4 py-3 bg-orange-100 border-b border-orange-200">
+                                <span class="w-7 h-7 rounded-full bg-orange-500 flex items-center justify-center shrink-0">
+                                    <i class="fas fa-exclamation text-white text-xs"></i>
+                                </span>
+                                <div>
+                                    <p class="text-[11px] font-black text-orange-700 uppercase tracking-widest leading-none">Order Adjusted</p>
+                                    <p class="text-[10px] text-orange-500 font-semibold mt-0.5">Production shortfall — no substitute today</p>
+                                </div>
+                            </div>
+                            <div class="px-4 py-3">
+                                <div class="flex items-start gap-2 bg-white rounded-xl p-2.5 border border-orange-100">
+                                    <i class="fas fa-info-circle text-orange-400 mt-0.5 text-xs shrink-0"></i>
+                                    <p class="text-[9px] text-gray-600 leading-4">${o.adjustmentNote}</p>
+                                </div>
+                            </div>
+                        </div>`;
                 }
 
                 // ── DELIVERY TRACKING ─────────────────────────────────────────
@@ -1121,6 +1545,8 @@ window._authResolved = false;
                 const repeatBtn = `<button onclick="window.repeatOrder('${id}')" class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-full hover:bg-green-100 transition"><i class="fas fa-redo-alt mr-1"></i> Repeat</button>`;
                 const editBtn = o.status === 'PLACED' ? 
                     `<button onclick="window.editOrder('${id}')" class="text-xs font-bold text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-50 transition"><i class="fas fa-edit mr-1"></i> Edit</button>` : '';
+                const complaintBtn = o.status === 'DELIVERED' ?
+                    `<button onclick="window.openComplaintModal('${id}', '${(o.customerName||'').replace(/'/g,'')}', '${(o.address||'').replace(/'/g,'').substring(0,60)}')" class="text-xs font-bold text-red-500 bg-red-50 px-3 py-1.5 rounded-full hover:bg-red-100 transition border border-red-100"><i class="fas fa-exclamation-circle mr-1"></i> Complaint</button>` : '';
                 
                 return `
                     <div class="modern-card p-6">
@@ -1136,6 +1562,7 @@ window._authResolved = false;
                                 <div class="flex gap-2 mt-2">
                                     ${editBtn}
                                     ${repeatBtn}
+                                    ${complaintBtn}
                                 </div>
                             </div>
                         </div>
@@ -1462,25 +1889,16 @@ window._authResolved = false;
             return window.showToast("No internet connection. Please check your network.", true);
         }
         btn.disabled = true;
-        btn.innerText = "Connecting...";
-        // Test Firebase connection first
-        try {
-            await fetch("https://oligo-store-default-rtdb.firebaseio.com/.json?shallow=true", 
-                { method: 'GET', signal: AbortSignal.timeout(5000) });
-        } catch(e) {
-            // Firebase reachable check failed - still try login
-            console.log("Firebase reachability check:", e.message);
-        }
         btn.innerText = "Logging in...";
         
-        // Safety timeout: if auth state doesn't fire within 30 seconds, reset button
+        // Safety timeout: reset button if login doesn't complete in 12 seconds
         const loginTimeout = setTimeout(() => {
             if (btn.disabled) {
                 btn.disabled = false;
                 btn.innerText = "Login";
-                window.showToast("Login taking long. Check internet & try again.", true);
+                window.showToast("Login is taking too long. Please check your internet connection and try again.", true);
             }
-        }, 30000);
+        }, 12000);
         
         // Retry login up to 3 times on network error
         let loginAttempt = 0;
@@ -1618,6 +2036,82 @@ window._authResolved = false;
         } 
     });
 
+    // ══════════════════════════════════════════════════
+    // FARM FEED — Customer App Logic
+    // ══════════════════════════════════════════════════
+    window.loadFarmFeed = function() {
+        const container = document.getElementById('farmFeedContainer');
+        if (!container) return;
+        container.innerHTML = '<div class="text-center py-12 text-gray-400"><div class="spinner" style="margin:0 auto 12px;"></div><p class="text-sm">Loading farm updates...</p></div>';
+
+        // Load posts from all farm producers
+        db.ref('farmGallery').once('value', function(snap) {
+            const allPosts = [];
+            snap.forEach(function(farmSnap) {
+                farmSnap.forEach(function(postSnap) {
+                    allPosts.push({ key: postSnap.key, farmId: farmSnap.key, ...postSnap.val() });
+                });
+            });
+
+            // Sort newest first
+            allPosts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            if (allPosts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 text-gray-400">
+                        <i class="fas fa-seedling text-5xl mb-4 block text-green-100"></i>
+                        <p class="font-bold text-gray-500">No farm updates yet</p>
+                        <p class="text-xs mt-2 text-gray-400">Check back soon — your farm will post photos &amp; videos here.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = allPosts.map(post => {
+                const timeAgo = (() => {
+                    if (!post.postedAt && !post.timestamp) return '';
+                    const diff = Date.now() - (post.timestamp || new Date(post.postedAt).getTime());
+                    const mins = Math.floor(diff / 60000);
+                    const hours = Math.floor(diff / 3600000);
+                    const days = Math.floor(diff / 86400000);
+                    if (mins < 1) return 'Just now';
+                    if (mins < 60) return mins + 'm ago';
+                    if (hours < 24) return hours + 'h ago';
+                    return days + 'd ago';
+                })();
+
+                let mediaHtml = '';
+                if (post.type === 'photo' && post.imageData) {
+                    mediaHtml = `<img src="${post.imageData}" class="w-full rounded-2xl mb-3" style="max-height:320px;object-fit:cover;" loading="lazy">`;
+                } else if (post.type === 'video' && post.videoUrl) {
+                    const ytMatch = post.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+                    if (ytMatch) {
+                        mediaHtml = `<div class="rounded-2xl overflow-hidden mb-3" style="position:relative;padding-bottom:56.25%;height:0;"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://www.youtube.com/embed/${ytMatch[1]}" frameborder="0" allowfullscreen></iframe></div>`;
+                    } else {
+                        mediaHtml = `<div class="bg-gray-900 rounded-2xl mb-3 p-6 text-center"><i class="fas fa-play-circle text-5xl text-green-400 mb-2 block"></i><a href="${post.videoUrl}" target="_blank" class="text-green-400 text-xs underline break-all">Watch Video</a></div>`;
+                    }
+                }
+
+                return `
+                    <div class="modern-card p-5 fade-in">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-9 h-9 bg-green-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm shadow-green-100">
+                                <i class="fas fa-seedling text-white text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm text-gray-900">${post.farmName || 'Oligo Farm'}</p>
+                                <p class="text-[10px] text-gray-400">${timeAgo}</p>
+                            </div>
+                            ${post.type === 'video' ? '<span class="ml-auto text-[10px] bg-purple-50 text-purple-600 font-bold px-2 py-1 rounded-full"><i class="fas fa-play-circle mr-1"></i>Video</span>' : '<span class="ml-auto text-[10px] bg-green-50 text-green-600 font-bold px-2 py-1 rounded-full"><i class="fas fa-camera mr-1"></i>Photo</span>'}
+                        </div>
+                        ${mediaHtml}
+                        ${post.caption ? `<p class="text-sm text-gray-700 leading-relaxed">${post.caption}</p>` : ''}
+                    </div>`;
+            }).join('');
+        }, function(err) {
+            container.innerHTML = '<div class="text-center py-8 text-red-400"><i class="fas fa-exclamation-circle text-2xl mb-2 block"></i><p class="text-sm">Could not load farm updates. Check your connection.</p></div>';
+        });
+    };
+
     // Force hide loader on error
     window.addEventListener('error', function() {
         document.getElementById('appLoader').style.display = 'none';
@@ -1704,6 +2198,224 @@ if ('serviceWorker' in navigator) {
         })
         .catch(err => console.log('SW registration failed (normal for file:// URLs):', err));
 }
+</script>
+
+    <!-- COMPLAINT MODAL -->
+    <div id="complaintModal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-50 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-[28px] w-full max-w-sm shadow-2xl overflow-hidden">
+            <div class="bg-red-500 p-5 text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-lg">Report a Complaint</h3>
+                        <p class="text-xs text-red-100 mt-0.5">Help us improve your experience</p>
+                    </div>
+                    <button onclick="window.closeComplaintModal()" class="w-8 h-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <input type="hidden" id="complaintOrderId">
+            <div class="p-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Select Issue Type</label>
+                    <div id="complaintTypeOptions" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Additional Note (optional)</label>
+                    <textarea id="complaintNote" rows="2" placeholder="Describe the issue in more detail..." class="w-full border p-3 rounded-xl bg-gray-50 outline-none focus:ring-2 focus:ring-red-300 text-sm resize-none"></textarea>
+                </div>
+                <button onclick="window.submitComplaint()" class="w-full bg-red-500 text-white py-3 rounded-2xl font-bold text-sm shadow-md active:scale-95 transition">
+                    <i class="fas fa-paper-plane mr-2"></i> Submit Complaint
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // ======================================================
+    // COMPLAINT SYSTEM - Customer Side (FIXED)
+    // ======================================================
+
+    window.openComplaintModal = function(orderId, customerName, address) {
+        document.getElementById('complaintOrderId').value = orderId;
+        document.getElementById('complaintNote').value = '';
+        document.getElementById('complaintModal').classList.remove('hidden');
+
+        // Load complaint types from Firebase
+        const typeOptions = document.getElementById('complaintTypeOptions');
+        typeOptions.innerHTML = '<p class="text-xs text-gray-400 text-center py-2">Loading...</p>';
+
+        onValue(ref(db, 'settings/complaintTypes'), (snap) => {
+            const types = snap.val() || {};
+            typeOptions.innerHTML = '';
+            if (Object.keys(types).length === 0) {
+                typeOptions.innerHTML = '<p class="text-xs text-gray-400 text-center">No complaint types configured.</p>';
+                return;
+            }
+            Object.entries(types).forEach(([id, t]) => {
+                typeOptions.innerHTML += `
+                    <label class="flex items-center gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100 cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                        <input type="radio" name="complaintType" value="${t.name}" class="w-4 h-4 text-red-500 accent-red-500">
+                        <span class="text-sm text-gray-700">${t.name}</span>
+                    </label>`;
+            });
+        }, { onlyOnce: true });
+    };
+
+    window.closeComplaintModal = function() {
+        document.getElementById('complaintModal').classList.add('hidden');
+    };
+
+    window.submitComplaint = function() {
+        const selected = document.querySelector('input[name="complaintType"]:checked');
+        if (!selected) return window.showToast('Please select a complaint type', true);
+
+        const orderId = document.getElementById('complaintOrderId').value;
+        const note    = document.getElementById('complaintNote').value.trim();
+        const order   = allOrdersData ? allOrdersData[orderId] : null;
+
+        // Extract location from address (format: "JointName - Location: FullAddress")
+        let location = '—';
+        if (order && order.address) {
+            const parts = order.address.split(' - ');
+            if (parts.length >= 2) {
+                const locPart = parts[1].split(':')[0].trim();
+                location = locPart || parts[0].trim();
+            } else {
+                location = order.address.substring(0, 40);
+            }
+        }
+
+        const complaintData = {
+            orderId:       orderId,
+            customerUid:   auth.currentUser ? auth.currentUser.uid : '',
+            customerName:  userLocalData ? (userLocalData.name || 'Unknown') : 'Unknown',
+            customerPhone: userLocalData ? (userLocalData.phone || '') : '',
+            address:       order ? (order.address || '') : '',
+            location:      location,
+            complaintType: selected.value,
+            note:          note,
+            status:        'Open',
+            timestamp:     serverTimestamp()
+        };
+
+        push(ref(db, 'customer_complaints'), complaintData).then(() => {
+            window.closeComplaintModal();
+            window.showToast('Complaint submitted. We will look into it!');
+        }).catch(() => {
+            window.showToast('Failed to submit. Please try again.', true);
+        });
+    };
+
+// ── MY DESK (FIXED: uses auth.currentUser directly, added safety checks) ──
+var _myComplaintsAll = [];
+
+window.loadMyComplaints = function() {
+    // CRITICAL FIX: Use auth.currentUser instead of relying solely on window._loggedUid
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+        console.warn("loadMyComplaints: No user logged in");
+        var container = document.getElementById('myComplaintsList');
+        if (container) container.innerHTML = '<p class="text-center text-red-400 py-6 text-sm">You must be logged in to view complaints.</p>';
+        return;
+    }
+    
+    const uid = currentUser.uid;
+    // Update global variable as well for other parts
+    window._loggedUid = uid;
+    
+    var container = document.getElementById('myComplaintsList');
+    if (!container) return;
+    
+    container.innerHTML = '<p class="text-center text-gray-300 py-6 text-sm">Loading...</p>';
+    
+    // Safety timeout: if fetch takes > 8 seconds, show error
+    const timeoutId = setTimeout(() => {
+        if (container && container.innerHTML === '<p class="text-center text-gray-300 py-6 text-sm">Loading...</p>') {
+            container.innerHTML = '<p class="text-center text-red-400 py-6 text-sm">Failed to load complaints. Please check your connection.</p>';
+        }
+    }, 8000);
+    
+    firebase.database().ref('customer_complaints')
+        .orderByChild('customerUid')
+        .equalTo(uid)
+        .once('value')
+        .then(function(snap) {
+            clearTimeout(timeoutId);
+            var all = snap.val() || {};
+            _myComplaintsAll = Object.keys(all).map(function(k) { 
+                return Object.assign({ _id: k }, all[k]); 
+            }).sort(function(a, b) { 
+                return (b.timestamp || 0) - (a.timestamp || 0); 
+            });
+            window.filterMyComplaints('all');
+        })
+        .catch(function(err) {
+            clearTimeout(timeoutId);
+            console.error("Load complaints error:", err);
+            if (container) container.innerHTML = '<p class="text-center text-red-400 py-6 text-sm">Error loading complaints. ' + err.message + '</p>';
+        });
+};
+
+window.filterMyComplaints = function(filter) {
+    // Update filter button styles
+    ['all','open','resolved'].forEach(function(f) {
+        var btn = document.getElementById('cf-' + f);
+        if (!btn) return;
+        if (f === filter) {
+            btn.classList.add('bg-white','shadow','text-gray-800');
+            btn.classList.remove('text-gray-500');
+        } else {
+            btn.classList.remove('bg-white','shadow','text-gray-800');
+            btn.classList.add('text-gray-500');
+        }
+    });
+
+    var list = filter === 'open'
+        ? _myComplaintsAll.filter(function(c){ return c.status !== 'Resolved'; })
+        : filter === 'resolved'
+            ? _myComplaintsAll.filter(function(c){ return c.status === 'Resolved'; })
+            : _myComplaintsAll;
+
+    var container = document.getElementById('myComplaintsList');
+    if (!container) return;
+    if (list.length === 0) {
+        container.innerHTML = '<p class="text-center text-gray-300 py-6 text-sm">No complaints in this category.</p>';
+        return;
+    }
+
+    container.innerHTML = list.map(function(c) {
+        var dateStr = c.timestamp ? new Date(c.timestamp).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '';
+        var isResolved = c.status === 'Resolved';
+        var statusBadge = isResolved
+            ? '<span class="text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">Resolved</span>'
+            : '<span class="text-[10px] font-bold text-orange-500 bg-orange-100 px-2 py-0.5 rounded-full">Pending</span>';
+
+        var replyBlock = '';
+        if (isResolved && c.actionTaken) {
+            replyBlock = '<div class="mt-3 bg-green-50 border border-green-100 rounded-xl p-3">'
+                + '<p class="text-[10px] font-bold text-green-600 uppercase mb-1"><i class="fas fa-reply mr-1"></i>Team Response</p>'
+                + '<p class="text-xs text-gray-700">' + c.actionTaken + '</p>'
+                + '<p class="text-[10px] text-gray-400 mt-1">— ' + (c.resolvedBy || 'Production Team') + '</p>'
+                + '</div>';
+        } else if (!isResolved) {
+            replyBlock = '<div class="mt-3 bg-orange-50 border border-orange-100 rounded-xl p-3">'
+                + '<p class="text-[10px] text-orange-500 font-medium"><i class="fas fa-clock mr-1"></i>Our team is reviewing your complaint. We\'ll get back to you shortly.</p>'
+                + '</div>';
+        }
+
+        return '<div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">'
+            + '<div class="flex justify-between items-start mb-1">'
+            + '<p class="text-sm font-bold text-gray-800">' + (c.complaintType || '—') + '</p>'
+            + statusBadge
+            + '</div>'
+            + (c.note ? '<p class="text-xs text-gray-400 mb-1 italic">"' + c.note + '"</p>' : '')
+            + '<p class="text-[10px] text-gray-300">' + dateStr + '</p>'
+            + replyBlock
+            + '</div>';
+    }).join('');
+};
+
 </script>
 
 </body>
