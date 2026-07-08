@@ -387,10 +387,7 @@
                         <select id="checkoutAddrSelect" class="w-full bg-transparent border-none font-bold text-sm outline-none focus:ring-0 cursor-pointer"><option value="">-- Choose --</option></select>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-2xl">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase">Date</span>
-                            <button type="button" id="multiDateToggleBtn" onclick="window.toggleMultiDateMode()" class="text-[9px] font-bold text-green-600 whitespace-nowrap">+ Multiple Days</button>
-                        </div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">Date</span>
                         <div id="singleDateWrap">
                             <input type="date" id="checkoutDate" class="w-full bg-transparent border-none font-bold text-sm outline-none focus:ring-0 cursor-pointer text-gray-800" onchange="window.validateDeliveryDate(this.value)">
                             <p class="text-[9px] text-gray-400 mt-1">No Sundays · No Holidays</p>
@@ -400,6 +397,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="flex justify-end -mt-2">
+                    <button type="button" id="multiDateToggleBtn" onclick="window.toggleMultiDateMode()" class="text-[10px] font-bold text-green-600 whitespace-nowrap px-2 py-1">+ Order for Multiple Days</button>
                 </div>
                 <div id="multiDateWrap" class="hidden bg-gray-50 p-4 rounded-2xl">
                     <div class="flex items-center justify-between mb-2">
@@ -646,7 +646,7 @@ window._authResolved = false;
         const toggleBtn = document.getElementById('multiDateToggleBtn');
         if (singleWrap) singleWrap.classList.remove('hidden');
         if (multiWrap) multiWrap.classList.add('hidden');
-        if (toggleBtn) { toggleBtn.innerText = '+ Multiple Days'; toggleBtn.classList.remove('hidden'); }
+        if (toggleBtn) { toggleBtn.innerText = '+ Order for Multiple Days'; toggleBtn.classList.remove('hidden'); }
     };
 
     window.toggleAuth = (isReg) => { 
@@ -1683,7 +1683,7 @@ window._authResolved = false;
         multiDateMode = !multiDateMode;
         document.getElementById('singleDateWrap').classList.toggle('hidden', multiDateMode);
         document.getElementById('multiDateWrap').classList.toggle('hidden', !multiDateMode);
-        document.getElementById('multiDateToggleBtn').innerText = multiDateMode ? '← Single Day' : '+ Multiple Days';
+        document.getElementById('multiDateToggleBtn').innerText = multiDateMode ? '← Back to Single Day' : '+ Order for Multiple Days';
         if (multiDateMode) {
             calCurrentMonth = new Date(); calCurrentMonth.setDate(1); calCurrentMonth.setHours(0,0,0,0);
             renderMultiDateCalendar();
