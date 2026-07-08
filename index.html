@@ -387,14 +387,29 @@
                         <select id="checkoutAddrSelect" class="w-full bg-transparent border-none font-bold text-sm outline-none focus:ring-0 cursor-pointer"><option value="">-- Choose --</option></select>
                     </div>
                     <div class="bg-gray-50 p-4 rounded-2xl">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">Date</span>
-                        <input type="date" id="checkoutDate" class="w-full bg-transparent border-none font-bold text-sm outline-none focus:ring-0 cursor-pointer text-gray-800" onchange="window.validateDeliveryDate(this.value)">
-                        <p class="text-[9px] text-gray-400 mt-1">No Sundays · No Holidays</p>
-                        <div id="dateWarning" class="hidden mt-2 text-[10px] font-bold text-red-600 leading-4 flex items-start gap-1">
-                            <i class="fas fa-ban mt-0.5 shrink-0"></i>
-                            <span id="dateWarningMsg"></span>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">Date</span>
+                            <button type="button" id="multiDateToggleBtn" onclick="window.toggleMultiDateMode()" class="text-[9px] font-bold text-green-600 whitespace-nowrap">+ Multiple Days</button>
+                        </div>
+                        <div id="singleDateWrap">
+                            <input type="date" id="checkoutDate" class="w-full bg-transparent border-none font-bold text-sm outline-none focus:ring-0 cursor-pointer text-gray-800" onchange="window.validateDeliveryDate(this.value)">
+                            <p class="text-[9px] text-gray-400 mt-1">No Sundays · No Holidays</p>
+                            <div id="dateWarning" class="hidden mt-2 text-[10px] font-bold text-red-600 leading-4 flex items-start gap-1">
+                                <i class="fas fa-ban mt-0.5 shrink-0"></i>
+                                <span id="dateWarningMsg"></span>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div id="multiDateWrap" class="hidden bg-gray-50 p-4 rounded-2xl">
+                    <div class="flex items-center justify-between mb-2">
+                        <button type="button" onclick="window.calShiftMonth(-1)" class="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-chevron-left text-xs"></i></button>
+                        <span id="calMonthLabel" class="text-xs font-bold text-gray-700"></span>
+                        <button type="button" onclick="window.calShiftMonth(1)" class="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-chevron-right text-xs"></i></button>
+                    </div>
+                    <div id="calGrid" class="grid grid-cols-7 gap-y-2 items-center text-center"></div>
+                    <p class="text-[9px] text-gray-400 mt-2">Tap dates to select delivery days · Sundays &amp; holidays disabled</p>
+                    <p id="multiDateSummary" class="text-[10px] font-bold text-green-700 mt-2 leading-4"></p>
                 </div>
                 <div class="bg-gray-50 p-4 rounded-2xl">
                     <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">Message for Production (Optional)</span>
@@ -539,6 +554,9 @@ window._authResolved = false;
     window._loggedUid = null; // window-scoped so accessible across all script tags 
     let holidaysData = {}; 
     let editingOrderId = null; 
+    let multiDateMode = false;
+    let multiDates = [];
+    let calCurrentMonth = new Date(); calCurrentMonth.setDate(1); calCurrentMonth.setHours(0,0,0,0);
     let editingAddressId = null;
 
     function saveBasket() { 
@@ -621,6 +639,14 @@ window._authResolved = false;
         document.getElementById('cartModal').classList.add('hidden'); 
         editingOrderId = null; 
         document.getElementById('orderNote').value = ""; 
+        multiDateMode = false;
+        multiDates = [];
+        const singleWrap = document.getElementById('singleDateWrap');
+        const multiWrap = document.getElementById('multiDateWrap');
+        const toggleBtn = document.getElementById('multiDateToggleBtn');
+        if (singleWrap) singleWrap.classList.remove('hidden');
+        if (multiWrap) multiWrap.classList.add('hidden');
+        if (toggleBtn) { toggleBtn.innerText = '+ Multiple Days'; toggleBtn.classList.remove('hidden'); }
     };
 
     window.toggleAuth = (isReg) => { 
@@ -1135,6 +1161,41 @@ window._authResolved = false;
         
         const addr = document.getElementById('checkoutAddrSelect').value; 
         if(!addr) return window.showToast("Please select address.", true);
+
+        const note = document.getElementById('orderNote').value.trim();
+        const total = basket.reduce((a, b) => a + (b.price * b.qty), 0); 
+
+        // ── MULTI-DATE FLOW: same basket placed as separate orders across many days ──
+        if (multiDateMode && !editingOrderId) {
+            if (multiDates.length === 0) {
+                return window.showToast("Please select at least one delivery date.", true);
+            }
+            const pushes = multiDates.map(d => push(ref(db, 'orders'), {
+                customerUid: auth.currentUser.uid, 
+                customerName: userLocalData.name || "Guest", 
+                customerPhone: userLocalData.phone, 
+                restaurantId: activeProducerId, 
+                items: basket, 
+                originalItems: basket, 
+                totalAmount: total, 
+                address: addr, 
+                requestedDate: d, 
+                customerNote: note, 
+                status: "PLACED", 
+                createdAt: serverTimestamp() 
+            }));
+            const placedCount = multiDates.length;
+            Promise.all(pushes).then(() => {
+                basket = []; 
+                saveBasket(); 
+                multiDates = []; 
+                multiDateMode = false;
+                window.closeCart(); 
+                window.navTo('viewOrders'); 
+                window.showToast(placedCount + " orders placed across your selected dates!"); 
+            }).catch(e => window.showToast("Error: " + e.message, true));
+            return;
+        }
         
         const reqDate = document.getElementById('checkoutDate').value; 
         if(!reqDate) return window.showToast("Please select a delivery date.", true);
@@ -1151,9 +1212,6 @@ window._authResolved = false;
             window.showToast(`Holiday: ${holidayName} — Farm closed. Please select another date.`, true);
             return;
         }
-        
-        const note = document.getElementById('orderNote').value.trim();
-        const total = basket.reduce((a, b) => a + (b.price * b.qty), 0); 
         
         const orderData = { 
             customerUid: auth.currentUser.uid, 
@@ -1211,6 +1269,12 @@ window._authResolved = false;
         document.getElementById('orderBtn').innerText = "Update Order";
         document.getElementById('checkoutDate').value = order.requestedDate; 
         document.getElementById('orderNote').value = order.customerNote || "";
+        // Editing is always single-order: force single-date mode, hide the multi-date option
+        multiDateMode = false;
+        multiDates = [];
+        document.getElementById('singleDateWrap').classList.remove('hidden');
+        document.getElementById('multiDateWrap').classList.add('hidden');
+        document.getElementById('multiDateToggleBtn').classList.add('hidden');
     };
 
     window.deleteOrder = (orderId) => {
@@ -1613,6 +1677,78 @@ window._authResolved = false;
         }
         return null;
     };
+
+    // ── MULTI-DATE ORDER (place same basket across multiple delivery days) ──
+    window.toggleMultiDateMode = () => {
+        multiDateMode = !multiDateMode;
+        document.getElementById('singleDateWrap').classList.toggle('hidden', multiDateMode);
+        document.getElementById('multiDateWrap').classList.toggle('hidden', !multiDateMode);
+        document.getElementById('multiDateToggleBtn').innerText = multiDateMode ? '← Single Day' : '+ Multiple Days';
+        if (multiDateMode) {
+            calCurrentMonth = new Date(); calCurrentMonth.setDate(1); calCurrentMonth.setHours(0,0,0,0);
+            renderMultiDateCalendar();
+        }
+    };
+
+    window.calShiftMonth = (dir) => {
+        calCurrentMonth.setMonth(calCurrentMonth.getMonth() + dir);
+        renderMultiDateCalendar();
+    };
+
+    function renderMultiDateCalendar() {
+        const grid = document.getElementById('calGrid');
+        const label = document.getElementById('calMonthLabel');
+        if (!grid || !label) return;
+
+        const y = calCurrentMonth.getFullYear(), m = calCurrentMonth.getMonth();
+        label.innerText = calCurrentMonth.toLocaleString('en-IN', { month: 'long', year: 'numeric' });
+
+        const today = new Date(); today.setHours(0,0,0,0);
+        const firstDay = new Date(y, m, 1);
+        const startOffset = firstDay.getDay(); // 0=Sun
+        const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+        let html = ['S','M','T','W','T','F','S'].map(d => `<span class="text-[9px] font-bold text-gray-300">${d}</span>`).join('');
+        for (let i = 0; i < startOffset; i++) html += '<span></span>';
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const d = new Date(y, m, day);
+            const ds = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            const isPast = d < today;
+            const isSunday = d.getDay() === 0;
+            const holidayName = window.getHolidayName(ds);
+            const isDisabled = isPast || isSunday || !!holidayName;
+            const isSelected = multiDates.includes(ds);
+
+            let cls = 'w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs font-bold transition ';
+            if (isDisabled) cls += 'text-gray-200 cursor-not-allowed';
+            else if (isSelected) cls += 'bg-green-600 text-white cursor-pointer';
+            else cls += 'text-gray-700 bg-white border border-gray-100 hover:bg-green-50 cursor-pointer';
+
+            const title = holidayName ? ` title="${holidayName}"` : '';
+            html += `<button type="button"${title} ${isDisabled ? 'disabled' : `onclick="window.toggleCalDate('${ds}')"`} class="${cls}">${day}</button>`;
+        }
+        grid.innerHTML = html;
+        updateMultiDateSummary();
+    }
+
+    window.toggleCalDate = (ds) => {
+        const idx = multiDates.indexOf(ds);
+        if (idx >= 0) multiDates.splice(idx, 1); else multiDates.push(ds);
+        multiDates.sort();
+        renderMultiDateCalendar();
+    };
+
+    function updateMultiDateSummary() {
+        const el = document.getElementById('multiDateSummary');
+        if (!el) return;
+        if (multiDates.length === 0) { el.innerText = 'No dates selected yet.'; return; }
+        const formatted = multiDates.map(d => {
+            const dt = new Date(d + 'T00:00:00');
+            return dt.getDate() + ' ' + dt.toLocaleString('en-IN', { month: 'short' });
+        }).join(', ');
+        el.innerText = multiDates.length + ' date(s) selected: ' + formatted;
+    }
 
     // Real-time date validation when user picks a date
     window.validateDeliveryDate = (dateStr) => {
