@@ -52,6 +52,29 @@
        meta tag alone, especially for native date inputs. Keeps the calendar picker and its
        text rendering light/readable regardless of the phone's system dark mode. */
     html, input[type="date"], select { color-scheme: light; }
+    /* The date input's "dd-mm-yyyy" text is drawn via separate internal segments
+       (::-webkit-datetime-edit-*), not as a single block of text like a <select>'s
+       label. Android Chrome's forced-dark mode can invert the input's own background
+       without correctly recoloring those internal segments, especially when the field
+       has a transparent background (no solid color to anchor a consistent color pair
+       to) — leaving only the calendar icon visible and the date text blank. Giving the
+       field an explicit background plus explicitly coloring every internal segment
+       (with -webkit-text-fill-color, which forced-dark and autofill styling can
+       otherwise override even when `color` is set) fixes this everywhere. */
+    input[type="date"] {
+        color: #1f2937 !important;
+        -webkit-text-fill-color: #1f2937 !important;
+    }
+    input[type="date"]::-webkit-datetime-edit,
+    input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+    input[type="date"]::-webkit-datetime-edit-text,
+    input[type="date"]::-webkit-datetime-edit-month-field,
+    input[type="date"]::-webkit-datetime-edit-day-field,
+    input[type="date"]::-webkit-datetime-edit-year-field {
+        color: #1f2937 !important;
+        -webkit-text-fill-color: #1f2937 !important;
+        opacity: 1 !important;
+    }
     /* Base styles for all devices */
     body { font-family: 'Poppins', sans-serif; padding-bottom: 90px; background-color: #f9fafb; -webkit-tap-highlight-color: transparent; margin: 0; }
     #appLoader { position: fixed; inset: 0; background: white; z-index: 9000; display: flex; justify-content: center; align-items: center; flex-direction: column; }
