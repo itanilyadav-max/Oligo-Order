@@ -344,9 +344,9 @@
                 <span class="text-[10px] font-bold text-purple-500 uppercase tracking-widest block mb-2">Loved Our Greens?</span>
                 <p class="text-sm text-gray-600 mb-5 leading-relaxed">Your review helps other health lovers find us. It takes 30 seconds and means the world to us! 🌱</p>
                 <div class="space-y-3">
-                    <a href="https://www.facebook.com/oligomicrogreens" target="_blank"
+                    <a href="https://www.facebook.com/oligogreens" target="_blank"
                        class="flex items-center gap-4 bg-white rounded-2xl px-5 py-4 shadow-sm border border-gray-100 active:scale-95 transition">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">
+                        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
                             <i class="fab fa-facebook-f text-white text-lg"></i>
                         </div>
                         <div>
@@ -356,13 +356,13 @@
                         <i class="fas fa-chevron-right text-gray-300 ml-auto"></i>
                     </a>
                     <a href="https://www.instagram.com/oligomicrogreens" target="_blank"
-                       class="flex items-center gap-4 bg-white rounded-2xl px-5 py-4 shadow-sm border border-gray-100 active:scale-95 transition">
+			                       class="flex items-center gap-4 bg-white rounded-2xl px-5 py-4 shadow-sm border border-gray-100 active:scale-95 transition">
                         <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style="background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">
                             <i class="fab fa-instagram text-white text-lg"></i>
                         </div>
                         <div>
                             <p class="font-bold text-sm text-gray-800">Tag us on Instagram</p>
-                            <p class="text-xs text-gray-400">@oligomicrogreens — show your plate!</p>
+                            <p class="text-xs text-gray-400">@oligogreens — show your plate!</p>
                         </div>
                         <i class="fas fa-chevron-right text-gray-300 ml-auto"></i>
                     </a>
@@ -1213,6 +1213,20 @@ window._authResolved = false;
         document.getElementById('orderNote').value = order.customerNote || "";
     };
 
+    window.deleteOrder = (orderId) => {
+        const order = allOrdersData[orderId];
+        if(!order || order.status !== 'PLACED') {
+            return window.showToast("This order can no longer be deleted.", true);
+        }
+        if(!confirm("Delete this order? This cannot be undone.")) return;
+
+        remove(ref(db, 'orders/' + orderId)).then(() => {
+            window.showToast("Order deleted.");
+        }).catch((e) => {
+            window.showToast("Error: " + e.message, true);
+        });
+    };
+
     window.repeatOrder = (orderId) => {
         const order = allOrdersData[orderId]; 
         if(!order) return window.showToast("Order not found!", true);
@@ -1545,6 +1559,8 @@ window._authResolved = false;
                 const repeatBtn = `<button onclick="window.repeatOrder('${id}')" class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1.5 rounded-full hover:bg-green-100 transition"><i class="fas fa-redo-alt mr-1"></i> Repeat</button>`;
                 const editBtn = o.status === 'PLACED' ? 
                     `<button onclick="window.editOrder('${id}')" class="text-xs font-bold text-blue-600 border border-blue-100 px-3 py-1.5 rounded-full hover:bg-blue-50 transition"><i class="fas fa-edit mr-1"></i> Edit</button>` : '';
+                const deleteBtn = o.status === 'PLACED' ? 
+                    `<button onclick="window.deleteOrder('${id}')" class="text-xs font-bold text-red-600 border border-red-100 px-3 py-1.5 rounded-full hover:bg-red-50 transition"><i class="fas fa-trash-alt mr-1"></i> Delete</button>` : '';
                 const complaintBtn = o.status === 'DELIVERED' ?
                     `<button onclick="window.openComplaintModal('${id}', '${(o.customerName||'').replace(/'/g,'')}', '${(o.address||'').replace(/'/g,'').substring(0,60)}')" class="text-xs font-bold text-red-500 bg-red-50 px-3 py-1.5 rounded-full hover:bg-red-100 transition border border-red-100"><i class="fas fa-exclamation-circle mr-1"></i> Complaint</button>` : '';
                 
@@ -1561,6 +1577,7 @@ window._authResolved = false;
                                 <span class="status-badge ${statusClass}">${o.status.replace(/_/g, ' ')}</span>
                                 <div class="flex gap-2 mt-2">
                                     ${editBtn}
+                                    ${deleteBtn}
                                     ${repeatBtn}
                                     ${complaintBtn}
                                 </div>
