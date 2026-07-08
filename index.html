@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- Tells the browser this page is intentionally light-themed. Without this, Android
+     Chrome's "Automatically darken web content" setting force-darkens native form
+     controls (date/time inputs, selects) when the phone's system dark mode is on —
+     which can make the date picker's background and text render with too little
+     contrast to read, even though the page's own CSS never changed. Desktop Chrome
+     doesn't apply this forced-dark behavior the same way, which is why it looked
+     fine there but broke only on mobile. -->
+<meta name="color-scheme" content="light">
 <!-- Network Proxy Fix for all devices -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -39,6 +47,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+    /* Reinforces the color-scheme meta tag at the CSS level — some Android Chrome/WebView
+       versions honor this property on the element itself more reliably than the page-level
+       meta tag alone, especially for native date inputs. Keeps the calendar picker and its
+       text rendering light/readable regardless of the phone's system dark mode. */
+    html, input[type="date"], select { color-scheme: light; }
     /* Base styles for all devices */
     body { font-family: 'Poppins', sans-serif; padding-bottom: 90px; background-color: #f9fafb; -webkit-tap-highlight-color: transparent; margin: 0; }
     #appLoader { position: fixed; inset: 0; background: white; z-index: 9000; display: flex; justify-content: center; align-items: center; flex-direction: column; }
