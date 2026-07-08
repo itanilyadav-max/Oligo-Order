@@ -3,14 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!-- Tells the browser this page is intentionally light-themed. Without this, Android
-     Chrome's "Automatically darken web content" setting force-darkens native form
-     controls (date/time inputs, selects) when the phone's system dark mode is on —
-     which can make the date picker's background and text render with too little
-     contrast to read, even though the page's own CSS never changed. Desktop Chrome
-     doesn't apply this forced-dark behavior the same way, which is why it looked
-     fine there but broke only on mobile. -->
-<meta name="color-scheme" content="light">
 <!-- Network Proxy Fix for all devices -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -47,34 +39,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-    /* Reinforces the color-scheme meta tag at the CSS level — some Android Chrome/WebView
-       versions honor this property on the element itself more reliably than the page-level
-       meta tag alone, especially for native date inputs. Keeps the calendar picker and its
-       text rendering light/readable regardless of the phone's system dark mode. */
-    html, input[type="date"], select { color-scheme: light; }
-    /* The date input's "dd-mm-yyyy" text is drawn via separate internal segments
-       (::-webkit-datetime-edit-*), not as a single block of text like a <select>'s
-       label. Android Chrome's forced-dark mode can invert the input's own background
-       without correctly recoloring those internal segments, especially when the field
-       has a transparent background (no solid color to anchor a consistent color pair
-       to) — leaving only the calendar icon visible and the date text blank. Giving the
-       field an explicit background plus explicitly coloring every internal segment
-       (with -webkit-text-fill-color, which forced-dark and autofill styling can
-       otherwise override even when `color` is set) fixes this everywhere. */
-    input[type="date"] {
-        color: #1f2937 !important;
-        -webkit-text-fill-color: #1f2937 !important;
-    }
-    input[type="date"]::-webkit-datetime-edit,
-    input[type="date"]::-webkit-datetime-edit-fields-wrapper,
-    input[type="date"]::-webkit-datetime-edit-text,
-    input[type="date"]::-webkit-datetime-edit-month-field,
-    input[type="date"]::-webkit-datetime-edit-day-field,
-    input[type="date"]::-webkit-datetime-edit-year-field {
-        color: #1f2937 !important;
-        -webkit-text-fill-color: #1f2937 !important;
-        opacity: 1 !important;
-    }
     /* Base styles for all devices */
     body { font-family: 'Poppins', sans-serif; padding-bottom: 90px; background-color: #f9fafb; -webkit-tap-highlight-color: transparent; margin: 0; }
     #appLoader { position: fixed; inset: 0; background: white; z-index: 9000; display: flex; justify-content: center; align-items: center; flex-direction: column; }
@@ -425,7 +389,11 @@
                     <div class="bg-gray-50 p-4 rounded-2xl">
                         <span class="text-[10px] font-bold text-gray-400 uppercase block mb-1">Date</span>
                         <div id="singleDateWrap">
-                            <input type="date" id="checkoutDate" class="w-full bg-transparent border-none font-bold text-sm outline-none focus:ring-0 cursor-pointer text-gray-800" onchange="window.validateDeliveryDate(this.value)">
+                            <div id="checkoutDateDisplay" onclick="window.openSingleDatePicker()" class="w-full flex items-center justify-between cursor-pointer">
+                                <span id="checkoutDateDisplayText" class="font-bold text-sm text-gray-400">Select date</span>
+                                <i class="fas fa-calendar-alt text-gray-300 text-xs"></i>
+                            </div>
+                            <input type="date" id="checkoutDate" class="hidden">
                             <p class="text-[9px] text-gray-400 mt-1">No Sundays · No Holidays</p>
                             <div id="dateWarning" class="hidden mt-2 text-[10px] font-bold text-red-600 leading-4 flex items-start gap-1">
                                 <i class="fas fa-ban mt-0.5 shrink-0"></i>
@@ -433,6 +401,15 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div id="singleDatePickerWrap" class="hidden bg-gray-50 p-4 rounded-2xl -mt-1">
+                    <div class="flex items-center justify-between mb-2">
+                        <button type="button" onclick="window.calShiftMonthSingle(-1)" class="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-chevron-left text-xs"></i></button>
+                        <span id="calMonthLabelSingle" class="text-xs font-bold text-gray-700"></span>
+                        <button type="button" onclick="window.calShiftMonthSingle(1)" class="w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400"><i class="fas fa-chevron-right text-xs"></i></button>
+                    </div>
+                    <div id="calGridSingle" class="grid grid-cols-7 gap-y-2 items-center text-center"></div>
+                    <p class="text-[9px] text-gray-400 mt-2">Sundays &amp; holidays disabled</p>
                 </div>
                 <div class="flex justify-end -mt-2">
                     <button type="button" id="multiDateToggleBtn" onclick="window.toggleMultiDateMode()" class="text-[10px] font-bold text-green-600 whitespace-nowrap px-2 py-1">+ Order for Multiple Days</button>
@@ -593,6 +570,7 @@ window._authResolved = false;
     let multiDateMode = false;
     let multiDates = [];
     let calCurrentMonth = new Date(); calCurrentMonth.setDate(1); calCurrentMonth.setHours(0,0,0,0);
+    let calCurrentMonthSingle = new Date(); calCurrentMonthSingle.setDate(1); calCurrentMonthSingle.setHours(0,0,0,0);
     let editingAddressId = null;
 
     function saveBasket() { 
@@ -669,6 +647,7 @@ window._authResolved = false;
     window.openCart = () => { 
         renderBasket(); 
         document.getElementById('cartModal').classList.remove('hidden'); 
+        updateCheckoutDateDisplay();
     };
     
     window.closeCart = () => { 
@@ -680,8 +659,10 @@ window._authResolved = false;
         const singleWrap = document.getElementById('singleDateWrap');
         const multiWrap = document.getElementById('multiDateWrap');
         const toggleBtn = document.getElementById('multiDateToggleBtn');
+        const singlePicker = document.getElementById('singleDatePickerWrap');
         if (singleWrap) singleWrap.classList.remove('hidden');
         if (multiWrap) multiWrap.classList.add('hidden');
+        if (singlePicker) singlePicker.classList.add('hidden');
         if (toggleBtn) { toggleBtn.innerText = '+ Order for Multiple Days'; toggleBtn.classList.remove('hidden'); }
     };
 
@@ -1304,12 +1285,14 @@ window._authResolved = false;
         editingOrderId = orderId; 
         document.getElementById('orderBtn').innerText = "Update Order";
         document.getElementById('checkoutDate').value = order.requestedDate; 
+        updateCheckoutDateDisplay();
         document.getElementById('orderNote').value = order.customerNote || "";
         // Editing is always single-order: force single-date mode, hide the multi-date option
         multiDateMode = false;
         multiDates = [];
         document.getElementById('singleDateWrap').classList.remove('hidden');
         document.getElementById('multiDateWrap').classList.add('hidden');
+        document.getElementById('singleDatePickerWrap').classList.add('hidden');
         document.getElementById('multiDateToggleBtn').classList.add('hidden');
     };
 
@@ -1719,6 +1702,7 @@ window._authResolved = false;
         multiDateMode = !multiDateMode;
         document.getElementById('singleDateWrap').classList.toggle('hidden', multiDateMode);
         document.getElementById('multiDateWrap').classList.toggle('hidden', !multiDateMode);
+        document.getElementById('singleDatePickerWrap').classList.add('hidden');
         document.getElementById('multiDateToggleBtn').innerText = multiDateMode ? '← Back to Single Day' : '+ Order for Multiple Days';
         if (multiDateMode) {
             calCurrentMonth = new Date(); calCurrentMonth.setDate(1); calCurrentMonth.setHours(0,0,0,0);
@@ -1784,6 +1768,88 @@ window._authResolved = false;
             return dt.getDate() + ' ' + dt.toLocaleString('en-IN', { month: 'short' });
         }).join(', ');
         el.innerText = multiDates.length + ' date(s) selected: ' + formatted;
+    }
+
+    // ── SINGLE-DATE PICKER (custom, WebView-safe — native <input type=date> ──
+    // doesn't render its text reliably inside some Android WebView builds) ──
+    window.openSingleDatePicker = () => {
+        const wrap = document.getElementById('singleDatePickerWrap');
+        if (!wrap) return;
+        const isHidden = wrap.classList.contains('hidden');
+        wrap.classList.toggle('hidden');
+        if (isHidden) {
+            const cur = document.getElementById('checkoutDate').value;
+            if (cur) {
+                const d = new Date(cur + 'T00:00:00');
+                calCurrentMonthSingle = new Date(d.getFullYear(), d.getMonth(), 1);
+            } else {
+                calCurrentMonthSingle = new Date(); calCurrentMonthSingle.setDate(1); calCurrentMonthSingle.setHours(0,0,0,0);
+            }
+            renderSingleDateCalendar();
+        }
+    };
+
+    window.calShiftMonthSingle = (dir) => {
+        calCurrentMonthSingle.setMonth(calCurrentMonthSingle.getMonth() + dir);
+        renderSingleDateCalendar();
+    };
+
+    function renderSingleDateCalendar() {
+        const grid = document.getElementById('calGridSingle');
+        const label = document.getElementById('calMonthLabelSingle');
+        if (!grid || !label) return;
+
+        const y = calCurrentMonthSingle.getFullYear(), m = calCurrentMonthSingle.getMonth();
+        label.innerText = calCurrentMonthSingle.toLocaleString('en-IN', { month: 'long', year: 'numeric' });
+
+        const today = new Date(); today.setHours(0,0,0,0);
+        const firstDay = new Date(y, m, 1);
+        const startOffset = firstDay.getDay();
+        const daysInMonth = new Date(y, m + 1, 0).getDate();
+        const selectedVal = document.getElementById('checkoutDate').value;
+
+        let html = ['S','M','T','W','T','F','S'].map(d => `<span class="text-[9px] font-bold text-gray-300">${d}</span>`).join('');
+        for (let i = 0; i < startOffset; i++) html += '<span></span>';
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const d = new Date(y, m, day);
+            const ds = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+            const isPast = d < today;
+            const isSunday = d.getDay() === 0;
+            const holidayName = window.getHolidayName(ds);
+            const isDisabled = isPast || isSunday || !!holidayName;
+            const isSelected = ds === selectedVal;
+
+            let cls = 'w-8 h-8 mx-auto rounded-full flex items-center justify-center text-xs font-bold transition ';
+            if (isDisabled) cls += 'text-gray-200 cursor-not-allowed';
+            else if (isSelected) cls += 'bg-green-600 text-white cursor-pointer';
+            else cls += 'text-gray-700 bg-white border border-gray-100 hover:bg-green-50 cursor-pointer';
+
+            const title = holidayName ? ` title="${holidayName}"` : '';
+            html += `<button type="button"${title} ${isDisabled ? 'disabled' : `onclick="window.pickSingleDate('${ds}')"`} class="${cls}">${day}</button>`;
+        }
+        grid.innerHTML = html;
+    }
+
+    window.pickSingleDate = (ds) => {
+        document.getElementById('checkoutDate').value = ds;
+        window.validateDeliveryDate(ds);
+        updateCheckoutDateDisplay();
+        document.getElementById('singleDatePickerWrap').classList.add('hidden');
+    };
+
+    function updateCheckoutDateDisplay() {
+        const txt = document.getElementById('checkoutDateDisplayText');
+        if (!txt) return;
+        const val = document.getElementById('checkoutDate') ? document.getElementById('checkoutDate').value : '';
+        if (!val) {
+            txt.innerText = 'Select date';
+            txt.classList.add('text-gray-400'); txt.classList.remove('text-gray-800');
+            return;
+        }
+        const d = new Date(val + 'T00:00:00');
+        txt.innerText = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        txt.classList.remove('text-gray-400'); txt.classList.add('text-gray-800');
     }
 
     // Real-time date validation when user picks a date
